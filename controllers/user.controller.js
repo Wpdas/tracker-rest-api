@@ -34,6 +34,19 @@ const newUser = (req, res) => {
   }
 };
 
+const getUsers = (req, res) => {
+  UserModel.find({}, { _id: 1, username: 1 }, (error, users) => {
+    if (error) {
+      return res
+        .status(500)
+        .json({ error: 'There was an error while getting users' });
+    }
+
+    res.json(users);
+  });
+};
+
 module.exports = {
-  newUser
+  newUser,
+  getUsers
 };

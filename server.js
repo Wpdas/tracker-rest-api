@@ -24,6 +24,7 @@ app.get('/', (req, res) => {
 
 // User
 app.post('/api/exercise/new-user/', userController.newUser);
+app.get('/api/exercise/users', userController.getUsers);
 
 // Exercise
 app.post('/api/exercise/add', exerciseController.newExercise);

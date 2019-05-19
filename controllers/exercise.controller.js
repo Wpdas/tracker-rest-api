@@ -67,7 +67,8 @@ const newExercise = (req, res) => {
 };
 
 const readExercise = (req, res) => {
-  const { userId, from, to, limit } = req.query;
+  const { userId } = req.query;
+  let { from, to, limit } = req.query;
   const query = {};
   if (userId) query.userId = userId;
 
@@ -111,7 +112,7 @@ const readExercise = (req, res) => {
         }
 
         ExerciseModel.find(query)
-          .select('userId description date duration ')
+          .select({ _id: 0, description: 1, duration: 1, date: 1 })
           .limit(limit)
           .exec((err, exercises) => {
             if (err) {
@@ -121,8 +122,11 @@ const readExercise = (req, res) => {
             } else if (!user) {
               res.status(404).json({ error: 'Username not found' });
             } else {
+              const { _id, username } = user;
               const responseData = {
-                ...user,
+                _id,
+                username,
+                count: exercises.length,
                 log: exercises
               };
               res.json(responseData);
